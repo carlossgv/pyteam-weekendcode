@@ -72,9 +72,16 @@ def devuelve_farmacias_cercanas(usuario_latitud, usuario_longitud, url):
     coordenada_usuario = (usuario_latitud, usuario_longitud)
 
     for farmacia in farmacias:
-        coordenada_farmacia = (farmacia["local_lat"], farmacia["local_lng"])
-        if distance.distance(coordenada_farmacia, coordenada_usuario).km <= 5.0:
-            farmacias_cercanas.append(farmacia)
+
+        check_latitud = farmacia["local_lat"].replace('.', '', 1).replace('-', '', 1)
+        check_longitud = farmacia["local_lng"].replace('.', '', 1).replace('-', '', 1)
+
+        # Checkeamos primero que la latitud y la longitud sea valida
+        if check_latitud.isdigit() and check_longitud.isdigit():
+        
+            coordenada_farmacia =  (float(farmacia["local_lat"]), float(farmacia["local_lng"]))
+            if distance.distance(coordenada_farmacia, coordenada_usuario).km <= 5.0:
+                farmacias_cercanas.append(farmacia)
     
     return farmacias_cercanas
 

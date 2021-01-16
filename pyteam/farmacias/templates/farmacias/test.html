@@ -18,7 +18,12 @@
             let search_direction = encodeURIComponent(document.getElementById("search_direction").value.trim());
 
             if (search_direction.length > 0){
-                const url = "{% url 'farmacias' %}";
+
+                // Aqui se deben ingresar la latitud y longitud del usuario!!!
+                let user_lat = -32.878131;
+                let user_lng = -71.244828;
+
+                const url = "{% url 'farmacias' 'usuario_latitud' 'usuario_longitud' %}".replace("usuario_latitud", user_lat).replace("usuario_longitud", user_lng);
                 fetch(url).then(response => response.json()).then(function(data){
                     let container = document.getElementById("container");
                     //Limpia el container
@@ -29,7 +34,7 @@
                     //document.getElementById("search_direction").value = '';
                     
                     //Comprobamos si hay alguna farmacia
-                    if (data[0].id === '-1'){
+                    if (data[0].local_id === '-1'){
                         let text = document.createElement('h1');
                         text.innerHTML = "No hay farmacias cerca";
                         container.appendChild(text);
@@ -37,8 +42,7 @@
                         
                         for(i in data){
                             let text = document.createElement('h1');
-                            console.log(data[i].latitud);
-                            text.innerHTML = "Latitud:" + data[i].latitud + " Logitud:" + data[i].longitud + " Tienda:" + data[i].nombre;
+                            text.innerHTML = "Latitud:" + data[i].local_lat + " Logitud:" + data[i].local_lng + " Tienda:" + data[i].local_nombre;
                             container.appendChild(text);
 
                         }
