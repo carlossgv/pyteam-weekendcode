@@ -2,6 +2,18 @@
 
 {% block content %}
 
-    <h1>The best Team</h1>
+    <h1>Location:</h1>
 
+    <div id="bloque"></div>
+
+    <div id="map"></div>
+
+{% endblock %}
+
+{% block script %}
+{% load static %}
+<script async defer src="https://maps.googleapis.com/maps/api/js?key={{key_google}}&callback=initMap"
+        type="text/javascript">
+</script>
+<script src="{% static 'core/js/map.js' %}"></script>
 {% endblock %}
