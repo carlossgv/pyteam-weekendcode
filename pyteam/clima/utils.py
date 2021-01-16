@@ -1,17 +1,16 @@
-# Devuelve todos los datos del clima si se le da la latitud y longitud
-
+import os
 import requests
 from requests.exceptions import HTTPError
-import os
 
-
-WEATHER_API_KEY = os.environ.get("WEATHER_API_KEY")
-
-
-def cargar_api(url):
+# Cargar la api desde url indicado, si tiene headers también se le pueden agregar como parametros
+# responde JSON con data
+def cargar_api(url, headers=False):
     for url in [url]:
         try:
-            response = requests.get(url)
+            if headers:
+                response = requests.get(url, headers=headers)
+            else:
+                response = requests.get(url)
 
             response.raise_for_status()
         except HTTPError as http_err:
@@ -26,6 +25,7 @@ def cargar_api(url):
     return data
 
 
+WEATHER_API_KEY = os.environ.get("WEATHER_API_KEY")
 # funcion que da todos los datos del clima segun las coordenadas
 # adicionalmente agrega un key "recomendacion" para alertar al usuario de precauciones a tomar antes de salir
 # informacion de cada dato de la API: https://www.weatherbit.io/api/weather-current
@@ -46,7 +46,7 @@ def info_clima(latitud, longitud):
     elif "snow" in descripcion_clima.lower():
         info_clima["recomendacion"] = "Cuidado en la vía, nevará"
     elif "Clear sky" in descripcion_clima:
-        info_clima["recomendacion"] = "El día estará despejado hoy, ¡protégete del sol!"
+        info_clima["recomendacion"] = "El día estará despejado hoy. ¡Protégete del sol!"
     else:
         info_clima["recomendacion"] = "¡Ten un excelente día!"
 
