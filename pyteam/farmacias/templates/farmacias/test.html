@@ -4,4 +4,51 @@
 
     <h1>This is a testing</h1>
 
+    <div>
+        <h3>Ingresa una direccion</h3>
+        <input type="text" id="search_direction" required>
+    </div>
+    <button id="Btn"> Buscar farmacias cercanas</button>
+
+    <div id="container">
+    </div>
+    <script>
+        let Btn = document.getElementById("Btn");
+        Btn.addEventListener("click", function(){
+            let search_direction = encodeURIComponent(document.getElementById("search_direction").value.trim());
+
+            if (search_direction.length > 0){
+                const url = "{% url 'farmacias' %}";
+                fetch(url).then(response => response.json()).then(function(data){
+                    let container = document.getElementById("container");
+                    //Limpia el container
+                    while (container.hasChildNodes()) {  
+                        container.removeChild(container.firstChild);
+                    }
+                    //Limpiamos el contenido del input
+                    //document.getElementById("search_direction").value = '';
+                    
+                    //Comprobamos si hay alguna farmacia
+                    if (data[0].id === '-1'){
+                        let text = document.createElement('h1');
+                        text.innerHTML = "No hay farmacias cerca";
+                        container.appendChild(text);
+                    } else {
+                        
+                        for(i in data){
+                            let text = document.createElement('h1');
+                            console.log(data[i].latitud);
+                            text.innerHTML = "Latitud:" + data[i].latitud + " Logitud:" + data[i].longitud + " Tienda:" + data[i].nombre;
+                            container.appendChild(text);
+
+                        }
+
+                    }
+                })
+            }
+        })
+    </script>
+
+    
+
 {% endblock %}
