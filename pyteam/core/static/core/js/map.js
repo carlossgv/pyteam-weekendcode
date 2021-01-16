@@ -1,20 +1,32 @@
 //GET ACTUAL POSITION
-console.log('document loaded');
 var x = document.getElementById('bloque');
-var map, lat, long, infoWindow;
+var map, lat, lng, infoWindow;
+
+// Centrar mapa de ser posible al inicio
+document.addEventListener('DOMContentLoaded', () => {
+  if (navigator.geolocation) {
+    try {
+      centrarMapa();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+});
 
 // Coordenadas genericas de Santiago si el usuario no quiere dar geolocalizacion
 lat = -33.44950792242694;
-long = -70.66775128317754;
-showPosition(undefined, lat, long);
+lng = -70.66775128317754;
+showPosition(undefined, lat, lng);
+farmaciasCercanas(lat, lng);
 
+//creacion e inicio del mapa
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
     zoom: 15,
-    center: new google.maps.LatLng(lat, long),
+    center: new google.maps.LatLng(lat, lng),
     mapTypeId: 'roadmap',
   });
-  console.log('Latitud= ' + lat + ', Longitud= ' + long);
+  console.log('Latitud= ' + lat + ', Longitud= ' + lng);
 
   infoWindow = new google.maps.InfoWindow();
   const locationButton = document.createElement('button');
@@ -24,6 +36,15 @@ function initMap() {
   locationButton.addEventListener('click', () => {
     centrarMapa();
   });
+}
+
+// hace el fetch del listado de farmacias cercanas del backend
+function farmaciasCercanas(latitud, longitud) {
+  fetch(`../farmacias/${latitud}/${longitud}`)
+    .then((response) => response.json())
+    .then((farmacias) => {
+      farmacias.forEach((farmacia) => agregarMarker(farmacia));
+    });
 }
 
 // agrega marker en el mapa con parámetro elemento farmacia.json
@@ -60,6 +81,7 @@ function centrarMapa() {
           lat: position.coords.latitude,
           lng: position.coords.longitude,
         };
+        console.log(pos);
         showPosition(position);
         infoWindow.setPosition(pos);
         infoWindow.setContent('Tu ubicación');
