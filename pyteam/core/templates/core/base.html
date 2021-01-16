@@ -6,9 +6,14 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         
         <title>Aplicación PyTeam</title>
+        {% load static %}
+        <link href="{% static 'core/css/stylesheet.css' %}" rel="stylesheet">
     </head>
     <body>
         <!-- Content -->
         {% block content %}{% endblock %}
+
     </body>
+    {% block script %}{% endblock %}
+    
 </html>
