@@ -90,6 +90,7 @@ function centrarMapa() {
 
   farmaciasCercanas(lat, lng);
   fetchClima(lat, lng);
+  fetchFase(lat, lng);
 }
 
 // Manejo de error de acuerdo a la documentacion de Google
@@ -134,12 +135,13 @@ function farmaciasCercanas(latitud, longitud) {
     });
 }
 
+// funcion para conseguir el clima dependiento la ubicacion
 function fetchClima(latitud, longitud, direccion = false) {
   let url;
   if (direccion) {
     url = `../clima/${direccion}/`;
   } else {
-    url = `../clima/${latitud}/${longitud}/`;
+    url = `../clima/${latitud}_${longitud}_son_coordenadas/`;
   }
 
   fetch(url)
@@ -155,5 +157,29 @@ function fetchClima(latitud, longitud, direccion = false) {
       // CREE UNA CARPETA DENTRO DE STATIC CON LOS ICONOS DEL API DEL CLIMA
       // PUEDES ACCESAR A ELLOS CON LA RUTA LOCAL MAS LA VARIABLE icono QUE PUSE
       console.log(temperatura, descripcion, recomendacion, icono);
+    });
+}
+
+// FUNCION PARA OBTENER INFORMACION DE FASE
+// NOTA: SI SE DESEA CARGAR LA FUNCION CON DIRECCION SE DEBE LLAMAR DE LA SIGUIENTE MANERA:
+// fetchFase(undefined, undefined, direccion)
+function fetchFase(latitud, longitud, direccion = false) {
+  let url;
+  if (direccion) {
+    url = `../covid/${direccion}/`;
+  } else {
+    url = `../covid/${latitud}_${longitud}_son_coordenadas/`;
+  }
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((element) => {
+      comuna = element['comuna'];
+      numero_fase = element['numero_fase'];
+      nombre_fase = element['nombre_fase'];
+
+      // CREAR AQUI LOS ELEMENTOS PARA AGREGAR A LA INFORMACION DEL CLIMA EN EL FRONT
+      // DEJE ESTE LOG PARA QUE VEAS LO QUE MUESTRA
+      console.log(comuna, numero_fase, nombre_fase);
     });
 }

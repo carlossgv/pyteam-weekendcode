@@ -46,6 +46,3 @@ def fase_comuna(comuna):
             datos_comuna = "No hay información disponible de la comuna"
 
     return datos_comuna
-
-
-print(fase_comuna("macul"))
