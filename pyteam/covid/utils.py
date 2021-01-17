@@ -1,28 +1,29 @@
 import requests
 from unidecode import unidecode
 from requests.exceptions import HTTPError
+from pyteam.utils import cargar_api
 
-# Cargar la api desde url indicado, si tiene headers también se le pueden agregar como parametros
-# responde JSON con data
-def cargar_api(url, headers=False):
-    for url in [url]:
-        try:
-            if headers:
-                response = requests.get(url, headers=headers)
-            else:
-                response = requests.get(url)
+# # Cargar la api desde url indicado, si tiene headers también se le pueden agregar como parametros
+# # responde JSON con data
+# def cargar_api(url, headers=False):
+#     for url in [url]:
+#         try:
+#             if headers:
+#                 response = requests.get(url, headers=headers)
+#             else:
+#                 response = requests.get(url)
 
-            response.raise_for_status()
-        except HTTPError as http_err:
-            print(f"Ocurrió un error HTTP: {http_err}")
-        except Exception as err:
-            print(f"Ocurrió otro error: {err}")
-        else:
-            print("API cargada")
+#             response.raise_for_status()
+#         except HTTPError as http_err:
+#             print(f"Ocurrió un error HTTP: {http_err}")
+#         except Exception as err:
+#             print(f"Ocurrió otro error: {err}")
+#         else:
+#             print("API cargada")
 
-    data = response.json()
+#     data = response.json()
 
-    return data
+#     return data
 
 
 # Funcion que indica el numero de fase y nombre de la fase basado en la comuna indicada como parametro
@@ -45,3 +46,6 @@ def fase_comuna(comuna):
             datos_comuna = "No hay información disponible de la comuna"
 
     return datos_comuna
+
+
+print(fase_comuna("macul"))

@@ -1,28 +1,30 @@
 import os
 import requests
 from requests.exceptions import HTTPError
+from pyteam.utils import cargar_api
 
-# Cargar la api desde url indicado, si tiene headers también se le pueden agregar como parametros
-# responde JSON con data
-def cargar_api(url, headers=False):
-    for url in [url]:
-        try:
-            if headers:
-                response = requests.get(url, headers=headers)
-            else:
-                response = requests.get(url)
 
-            response.raise_for_status()
-        except HTTPError as http_err:
-            print(f"Ocurrió un error HTTP: {http_err}")
-        except Exception as err:
-            print(f"Ocurrió otro error: {err}")
-        else:
-            print("API cargada")
+# # # Cargar la api desde url indicado, si tiene headers también se le pueden agregar como parametros
+# # responde JSON con data
+# def cargar_api(url, headers=False):
+#     for url in [url]:
+#         try:
+#             if headers:
+#                 response = requests.get(url, headers=headers)
+#             else:
+#                 response = requests.get(url)
 
-    data = response.json()
+#             response.raise_for_status()
+#         except HTTPError as http_err:
+#             print(f"Ocurrió un error HTTP: {http_err}")
+#         except Exception as err:
+#             print(f"Ocurrió otro error: {err}")
+#         else:
+#             print("API cargada")
 
-    return data
+#     data = response.json()
+
+#     return data
 
 
 WEATHER_API_KEY = os.environ.get("WEATHER_API_KEY")

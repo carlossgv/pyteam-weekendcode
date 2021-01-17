@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 lat = -33.44950792242694;
 lng = -70.66775128317754;
 showPosition(undefined, lat, lng);
-farmaciasCercanas(lat, lng);
+// farmaciasCercanas(lat, lng);
 
 //creacion e inicio del mapa
 function initMap() {
@@ -36,15 +36,6 @@ function initMap() {
   locationButton.addEventListener('click', () => {
     centrarMapa();
   });
-}
-
-// hace el fetch del listado de farmacias cercanas del backend
-function farmaciasCercanas(latitud, longitud) {
-  fetch(`../farmacias/${latitud}/${longitud}`)
-    .then((response) => response.json())
-    .then((farmacias) => {
-      farmacias.forEach((farmacia) => agregarMarker(farmacia));
-    });
 }
 
 // agrega marker en el mapa con parámetro elemento farmacia.json
@@ -96,6 +87,8 @@ function centrarMapa() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
+
+  farmaciasCercanas(lat, lng);
 }
 
 // Manejo de error de acuerdo a la documentacion de Google
@@ -126,4 +119,33 @@ function showPosition(position = false, lat = false, long = false) {
       long +
       '</h3>';
   }
+}
+
+// hace el fetch del listado de farmacias cercanas del backend
+function farmaciasCercanas(latitud, longitud) {
+  fetch(`../farmacias/${latitud}/${longitud}`)
+    .then((response) => response.json())
+    .then((farmacias) => {
+      console.log(
+        `se esta corriendo farmaciascercanas con ${latitud},${longitud}`
+      );
+      farmacias.forEach((farmacia) => agregarMarker(farmacia));
+    });
+}
+
+function fetchClima(latitud, longitud) {
+  fetch(`../clima/${latitud}/${longitud}/`)
+    .then((response) => response.json())
+    .then((element) => {
+      let temperatura = `${element['temp']}°C`;
+      let descripcion = element['weather']['description'];
+      let recomendacion = element['recomendacion'];
+      let icono = element['weather']['icon'];
+
+      // CREAR AQUI LOS ELEMENTOS PARA AGREGAR A LA INFORMACION DEL CLIMA EN EL FRONT
+      // DEJE ESTE LOG PARA QUE VEAS LO QUE MUESTRA, SI NECESITAS OTRA INFO AVISAME
+      // CREE UNA CARPETA DENTRO DE STATIC CON LOS ICONOS DEL API DEL CLIMA
+      // PUEDES ACCESAR A ELLOS CON LA RUTA LOCAL MAS LA VARIABLE icono QUE PUSE
+      console.log(temperatura, descripcion, recomendacion, icono);
+    });
 }
