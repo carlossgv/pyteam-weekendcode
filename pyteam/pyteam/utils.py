@@ -6,16 +6,17 @@ from geopy import geocoders
 
 AGENT_NOMINATIM = "Py_Team"
 
+
 def cargar_api(url: str, headers: dict = False) -> list:
     """
-    Cargamos todo el contenido de la api de farmacias de turnos, 
+    Cargamos todo el contenido de la api de farmacias de turnos,
     si tiene headers también se le pueden agregar como parametros
 
     Returns
     -------
     data: list
         Una lista de diccionarios, donde cada diccionario contiene la informacion de una farmacia
-        
+
     """
     for url in [url]:
         try:
@@ -35,6 +36,7 @@ def cargar_api(url: str, headers: dict = False) -> list:
 
     return data
 
+
 def devuelve_latlng_usuario(direccion: str) -> tuple:
     """
     Encuentra la latitud y longitud para una direccion dada
@@ -42,7 +44,7 @@ def devuelve_latlng_usuario(direccion: str) -> tuple:
     Returns
     -------
     location: tuple
-        Una tupla con floats con la latitud y longitud, 
+        Una tupla con floats con la latitud y longitud,
         en caso de no encontrar la direccion devuelve una tupla con Nones
 
     """
@@ -56,6 +58,7 @@ def devuelve_latlng_usuario(direccion: str) -> tuple:
 
     return (location.latitude, location.longitude)
 
+
 def devuelve_comuna(latitud: float, longitud: float) -> str:
     """
     Encuentra la comuna del usuario
@@ -65,12 +68,12 @@ def devuelve_comuna(latitud: float, longitud: float) -> str:
     latitud: float
         En principio espera un float pero puede ser un str tambien
     longitud: float
-        En principio espera un float pero puede ser un str tambien  
+        En principio espera un float pero puede ser un str tambien
 
     Returns
     -------
     comuna: str
-        un string con la comuna del usuario, 
+        un string con la comuna del usuario,
         en caso de no encontrar la direccion devuelve un string vacio
 
     """
@@ -79,11 +82,15 @@ def devuelve_comuna(latitud: float, longitud: float) -> str:
     location = geolocator.reverse(f"{latitud}, {longitud}")
 
     if location == None:
-        return ''
-    
-    comuna = location.raw['address']['city']
+        return ""
+
+    comuna = location.raw["address"].get("city")
+
+    if comuna == None:
+        comuna = "Comuna no encontrada"
 
     return comuna
+
 
 def devuelve_datos_usuario(latitud: float, longitud: float) -> dict:
     """
@@ -94,12 +101,12 @@ def devuelve_datos_usuario(latitud: float, longitud: float) -> dict:
     latitud: float
         En principio espera un float pero puede ser un str tambien
     longitud: float
-        En principio espera un float pero puede ser un str tambien  
+        En principio espera un float pero puede ser un str tambien
 
     Returns
     -------
     datos_usuario: dict
-        un diccionario con los datos del usuario 
+        un diccionario con los datos del usuario
         en caso de no encontrar la direccion devuelve un diccionario vacio
 
     """
@@ -110,12 +117,19 @@ def devuelve_datos_usuario(latitud: float, longitud: float) -> dict:
 
     if location == None:
         return {}
-    
-    direccion = location.raw['address']['road']
-    numero = location.raw['address'].get('house_number') # Este es con get porque si no existe devuelve None
-    comuna = location.raw['address']['city']
-    region = location.raw['address']['state']
 
-    datos_usuario = {'direccion':direccion, 'numero':numero, 'comuna':comuna, 'region':region}
+    direccion = location.raw["address"].get("road")
+    numero = location.raw["address"].get(
+        "house_number"
+    )  # Este es con get porque si no existe devuelve None
+    comuna = location.raw["address"].get("city")
+    region = location.raw["address"].get("state")
+
+    datos_usuario = {
+        "direccion": direccion,
+        "numero": numero,
+        "comuna": comuna,
+        "region": region,
+    }
 
     return datos_usuario

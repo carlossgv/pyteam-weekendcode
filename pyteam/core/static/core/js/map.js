@@ -82,7 +82,8 @@ function centrarMapa() {
         console.log(
           `coordenadas a las cuales es esta corriendo ${lat}, ${lng} `
         );
-        
+
+        fetchTodo(pos.lat, pos.lng);
       },
       () => {
         handleLocationError(true, infoWindow, map.getCenter());
@@ -129,8 +130,17 @@ function showPosition(position = false, lat = false, long = false) {
 }
 
 // hace el fetch del listado de farmacias cercanas del backend
-function farmaciasCercanas(latitud, longitud) {
-  fetch(`../farmacias/${latitud}/${longitud}`)
+// si se va a usar con coordenadas usar asi farmaciasCercanas(lat, lng)
+// si se va a usar con direccion usar asi  farmaciasCercanas(undefined, undefined, direccion)
+function farmaciasCercanas(latitud, longitud, direccion = false) {
+  let url;
+  if (direccion) {
+    url = `../farmacias/${direccion}/`;
+  } else {
+    url = `../farmacias/${latitud}_${longitud}_son_coordenadas/`;
+  }
+
+  fetch(url)
     // fetch('https://farmanet.minsal.cl/maps/index.php/ws/getLocalesTurnos')
     .then((response) => response.json())
     .then((farmacias) => {
@@ -211,4 +221,36 @@ function fetchFase(latitud, longitud, direccion = false) {
       nombre_fase +
       ')</h4>';
     });
+}
+
+function direccionUsuario(latitud, longitud, direccion = false) {
+  let url;
+  if (direccion) {
+    url = `../core/user/${direccion}/`;
+  } else {
+    url = `../core/user/${latitud}_${longitud}_son_coordenadas/`;
+  }
+
+  fetch(url)
+    .then((response) => response.json())
+    .then((element) => {
+      comuna_usuario = element['comuna'];
+      direccion_usuario = element['direccion'];
+      numero_usuario = element['numero'];
+      region_usuario = element['region'];
+
+      console.log(
+        comuna_usuario,
+        direccion_usuario,
+        numero_usuario,
+        region_usuario
+      );
+    });
+}
+
+function fetchTodo(latitud, longitud, direccion = false) {
+  farmaciasCercanas(latitud, longitud, direccion);
+  setTimeout(() => fetchClima(latitud, longitud, direccion), 1000);
+  setTimeout(() => fetchFase(latitud, longitud, direccion), 2000);
+  setTimeout(() => direccionUsuario(latitud, longitud, direccion), 3000);
 }
