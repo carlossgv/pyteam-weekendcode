@@ -38,18 +38,6 @@ function initMap() {
   });
 }
 
-// hace el fetch del listado de farmacias cercanas del backend
-function farmaciasCercanas(latitud, longitud) {
-  fetch(`../farmacias/${latitud}/${longitud}`)
-    .then((response) => response.json())
-    .then((farmacias) => {
-      console.log(
-        `se esta corriendo farmaciascercanas con ${latitud},${longitud}`
-      );
-      farmacias.forEach((farmacia) => agregarMarker(farmacia));
-    });
-}
-
 // agrega marker en el mapa con parámetro elemento farmacia.json
 function agregarMarker(farmacia) {
   console.log(farmacia);
@@ -131,4 +119,33 @@ function showPosition(position = false, lat = false, long = false) {
       long +
       '</h3>';
   }
+}
+
+// hace el fetch del listado de farmacias cercanas del backend
+function farmaciasCercanas(latitud, longitud) {
+  fetch(`../farmacias/${latitud}/${longitud}`)
+    .then((response) => response.json())
+    .then((farmacias) => {
+      console.log(
+        `se esta corriendo farmaciascercanas con ${latitud},${longitud}`
+      );
+      farmacias.forEach((farmacia) => agregarMarker(farmacia));
+    });
+}
+
+function fetchClima(latitud, longitud) {
+  fetch(`../clima/${latitud}/${longitud}/`)
+    .then((response) => response.json())
+    .then((element) => {
+      let temperatura = `${element['temp']}°C`;
+      let descripcion = element['weather']['description'];
+      let recomendacion = element['recomendacion'];
+      let icono = element['weather']['icon'];
+
+      // CREAR AQUI LOS ELEMENTOS PARA AGREGAR A LA INFORMACION DEL CLIMA EN EL FRONT
+      // DEJE ESTE LOG PARA QUE VEAS LO QUE MUESTRA, SI NECESITAS OTRA INFO AVISAME
+      // CREE UNA CARPETA DENTRO DE STATIC CON LOS ICONOS DEL API DEL CLIMA
+      // PUEDES ACCESAR A ELLOS CON LA RUTA LOCAL MAS LA VARIABLE icono QUE PUSE
+      console.log(temperatura, descripcion, recomendacion, icono);
+    });
 }
