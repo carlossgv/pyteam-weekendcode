@@ -13,10 +13,8 @@ class HomeView(TemplateView):
 def info_cuarentena(request, direccion):
     if "son_coordenadas" in direccion:
         direccion = direccion.split("_")
-        print(direccion)
-        usuario_latitud = direccion[0]
-        usuario_longitud = direccion[1]
-
+        usuario_latitud = float(direccion[0])
+        usuario_longitud = float(direccion[1])
     else:
         usuario_latitud, usuario_longitud = devuelve_latlng_usuario(direccion)
 

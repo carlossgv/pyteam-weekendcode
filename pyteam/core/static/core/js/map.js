@@ -90,6 +90,7 @@ function centrarMapa() {
 
   farmaciasCercanas(lat, lng);
   fetchClima(lat, lng);
+  fetchFase(lat, lng);
 }
 
 // Manejo de error de acuerdo a la documentacion de Google
@@ -140,7 +141,7 @@ function fetchClima(latitud, longitud, direccion = false) {
   if (direccion) {
     url = `../clima/${direccion}/`;
   } else {
-    url = `../clima/${latitud}/${longitud}/`;
+    url = `../clima/${latitud}_${longitud}_son_coordenadas/`;
   }
 
   fetch(url)
