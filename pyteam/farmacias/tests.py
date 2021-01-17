@@ -1,5 +1,6 @@
 from django.test import TestCase
 from geopy import distance
+from geopy import geocoders
 
 # Create your tests here.
 class DistanceTestCase(TestCase):
@@ -25,4 +26,26 @@ class DistanceTestCase(TestCase):
                 farmacias_cercanas.append(farmacia)
 
         self.assertEqual(farmacias_cercanas[0]['nombre'], 'Italia')
+
+class GeoTestcase(TestCase):
+    def setUp(self):
+        self.direccion = "Premio Nobel 3554" #"Av Carlos Valdovinos 62, San Joaquín, Región Metropolitana"
+    def test_encontrar_comuna(self):
+        geolocator = geocoders.Nominatim(user_agent="Py_Team")
+
+        location1 = geolocator.geocode(self.direccion)
+        
+        print(location1.address)
+        print((location1.latitude, location1.longitude))
+        print(location1.raw)
+
+        location2 = geolocator.reverse("-33.4723444, -70.5965725")
+        
+        print(location2.address)
+        print((location2.latitude, location2.longitude))
+        raw = location2.raw
+        print(raw['address']['city'])
+
+        self.assertEqual(raw['address']['city'], "Ñuñoa")
+        
 

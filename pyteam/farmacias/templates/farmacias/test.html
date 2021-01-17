@@ -4,39 +4,53 @@
 
     <h1>This is a testing</h1>
 
-    <div>
-        <h3>Ingresa una direccion</h3>
-        <input type="text" id="search_direction" required>
+    <div style="padding:10px;">
+
+        <div>
+            <h3>Ingresa una direccion</h3>
+            <input type="text" id="search_direction" required>
+        </div>
+        <button id="Btn1"> Buscar farmacias cercanas via teclado</button>
+
     </div>
-    <button id="Btn"> Buscar farmacias cercanas</button>
+
+    <div style="padding:10px;margin-top:50px;">
+        <button id="Btn2"> Buscar farmacias cercanas geo</button>
+    </div>
+
+    
 
     <div id="container">
     </div>
     <script>
-        let Btn = document.getElementById("Btn");
-        Btn.addEventListener("click", function(){
+
+        // SCRIPT PARA EL BOTON CON LOCALIZACION VIA TECLADO
+
+        let Btn1 = document.getElementById("Btn1");
+        Btn1.addEventListener("click", function(){
             let search_direction = encodeURIComponent(document.getElementById("search_direction").value.trim());
 
             if (search_direction.length > 0){
+                
+                //Limpiamos el contenido del input
+                document.getElementById("search_direction").value = '';
 
-                // Aqui se deben ingresar la latitud y longitud del usuario!!!
-                let user_lat = -32.878131;
-                let user_lng = -71.244828;
-
-                const url = "{% url 'farmacias' 'usuario_latitud' 'usuario_longitud' %}".replace("usuario_latitud", user_lat).replace("usuario_longitud", user_lng);
+                const url = "{% url 'farmacias_direccion'  %}" + "?direccion=" + search_direction;
                 fetch(url).then(response => response.json()).then(function(data){
                     let container = document.getElementById("container");
                     //Limpia el container
                     while (container.hasChildNodes()) {  
                         container.removeChild(container.firstChild);
                     }
-                    //Limpiamos el contenido del input
-                    //document.getElementById("search_direction").value = '';
                     
                     //Comprobamos si hay alguna farmacia
                     if (data[0].local_id === '-1'){
                         let text = document.createElement('h1');
                         text.innerHTML = "No hay farmacias cerca";
+                        container.appendChild(text);
+                    } else if (data[0].local_id === '-2') {
+                        let text = document.createElement('h1');
+                        text.innerHTML = "Direccion invalida";
                         container.appendChild(text);
                     } else {
                         
@@ -50,6 +64,42 @@
                     }
                 })
             }
+        })
+
+        // SCRIPT PARA EL BOTON CON GEOLOCALIZACION
+
+        let Btn2 = document.getElementById("Btn2");
+        Btn2.addEventListener("click", function(){
+            
+            // Aqui se deben ingresar la latitud y longitud del usuario!!!
+            let user_lat = -32.878131;
+            let user_lng = -71.244828;
+
+            const url = "{% url 'farmacias' 'usuario_latitud' 'usuario_longitud' %}".replace("usuario_latitud", user_lat).replace("usuario_longitud", user_lng);
+            fetch(url).then(response => response.json()).then(function(data){
+                let container = document.getElementById("container");
+                //Limpia el container
+                while (container.hasChildNodes()) {  
+                    container.removeChild(container.firstChild);
+                }
+                
+                //Comprobamos si hay alguna farmacia
+                if (data[0].local_id === '-1'){
+                    let text = document.createElement('h1');
+                    text.innerHTML = "No hay farmacias cerca";
+                    container.appendChild(text);
+                } else {
+                    
+                    for(i in data){
+                        let text = document.createElement('h1');
+                        text.innerHTML = "Latitud:" + data[i].local_lat + " Logitud:" + data[i].local_lng + " Tienda:" + data[i].local_nombre;
+                        container.appendChild(text);
+
+                    }
+
+                }
+            })
+            
         })
     </script>
 

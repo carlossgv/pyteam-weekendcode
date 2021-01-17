@@ -6,8 +6,6 @@ import os
 class HomeView(TemplateView):
     template_name = "core/home.html"
 
-    print(os.environ.get("KEY_GOOGLEMAPS"))
-
     def get(self, request, *args, **kwargs):
         return render(
             request,
