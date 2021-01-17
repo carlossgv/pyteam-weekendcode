@@ -75,9 +75,16 @@ function centrarMapa() {
         console.log(pos);
         showPosition(position);
         infoWindow.setPosition(pos);
-        infoWindow.setContent('Tu ubicación');
+        infoWindow.setContent('Estás aquí');
         infoWindow.open(map);
         map.setCenter(pos);
+
+        console.log(
+          `coordenadas a las cuales es esta corriendo ${lat}, ${lng} `
+        );
+        farmaciasCercanas(pos.lat, pos.lng);
+        fetchClima(pos.lat, pos.lng);
+        fetchFase(pos.lat, pos.lng);
       },
       () => {
         handleLocationError(true, infoWindow, map.getCenter());
@@ -87,10 +94,6 @@ function centrarMapa() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
-
-  farmaciasCercanas(lat, lng);
-  fetchClima(lat, lng);
-  fetchFase(lat, lng);
 }
 
 // Manejo de error de acuerdo a la documentacion de Google
@@ -99,7 +102,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setContent(
     browserHasGeolocation
       ? 'Error: El servicio de Geolocalización falló.'
-      : 'Error: Tu navegador no soporta el servicio de Geolocalización.'
+      : 'Error: Favor ingresar dirección en la barra o autorizar localización.'
   );
   infoWindow.open(map);
 }
@@ -126,6 +129,7 @@ function showPosition(position = false, lat = false, long = false) {
 // hace el fetch del listado de farmacias cercanas del backend
 function farmaciasCercanas(latitud, longitud) {
   fetch(`../farmacias/${latitud}/${longitud}`)
+    // fetch('https://farmanet.minsal.cl/maps/index.php/ws/getLocalesTurnos')
     .then((response) => response.json())
     .then((farmacias) => {
       console.log(
@@ -136,6 +140,8 @@ function farmaciasCercanas(latitud, longitud) {
 }
 
 // funcion para conseguir el clima dependiento la ubicacion
+// si se va a usar con coordenadas usar asi fetchClima(lat, lng)
+// si se va a usar con direccion usar asi fetchClima(undefined, undefined, direccion)
 function fetchClima(latitud, longitud, direccion = false) {
   let url;
   if (direccion) {

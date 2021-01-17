@@ -1,7 +1,7 @@
 from geopy import distance
 from pyteam.utils import cargar_api
 
-DISTANCIA_MINIMA = 5.0  # KM
+DISTANCIA_MINIMA = 10.0  # KM
 
 
 def devuelve_farmacias_cercanas(
