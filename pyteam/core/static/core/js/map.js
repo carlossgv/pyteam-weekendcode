@@ -2,6 +2,12 @@
 var x = document.getElementById('bloque');
 var map, lat, lng, infoWindow;
 
+// Coordenadas genericas de Santiago si el usuario no quiere dar geolocalizacion
+lat = -33.44950792242694;
+lng = -70.66775128317754;
+// showPosition(undefined, lat, lng);
+// farmaciasCercanas(lat, lng);
+
 // Centrar mapa de ser posible al inicio
 document.addEventListener('DOMContentLoaded', () => {
   if (navigator.geolocation) {
@@ -11,13 +17,15 @@ document.addEventListener('DOMContentLoaded', () => {
       console.error(error);
     }
   }
+
+  document.querySelector('#formulario').onsubmit = inputUsuario;
 });
 
-// Coordenadas genericas de Santiago si el usuario no quiere dar geolocalizacion
-lat = -33.44950792242694;
-lng = -70.66775128317754;
-showPosition(undefined, lat, lng);
-// farmaciasCercanas(lat, lng);
+function inputUsuario() {
+  let direccion_usuario = document.querySelector('#direccion').value;
+  fetchTodo(undefined, undefined, direccion_usuario);
+  return false;
+}
 
 //creacion e inicio del mapa
 function initMap() {
@@ -73,7 +81,6 @@ function centrarMapa() {
           lng: position.coords.longitude,
         };
         console.log(pos);
-        showPosition(position);
         infoWindow.setPosition(pos);
         infoWindow.setContent('Estás aquí');
         infoWindow.open(map);
@@ -100,34 +107,34 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
   infoWindow.setPosition(pos);
   infoWindow.setContent(
     browserHasGeolocation
-      ? 'Error: El servicio de Geolocalización falló.'
+      ? 'Error: Favor ingresar dirección en la barra o autorizar localización.'
       : 'Error: Favor ingresar dirección en la barra o autorizar localización.'
   );
   infoWindow.open(map);
 }
 
 // Indica posicion en el front
-function showPosition(position = false, lat = false, long = false) {
-  if (position) {
-    x.innerHTML =
-      "<h4 class='latitude'>Latitude: " +
-      position.coords.latitude +
-      "</h4><h4 class='longitude'>Longitude: " +
-      position.coords.longitude +
-      '</h4>';
-  } else {
-    x.innerHTML =
-      "<h3 class='latitude'>Latitude: " +
-      lat +
-      "</h3><h3 class='longitude'>Longitude: " +
-      long +
-      '</h3>';
+// function showPosition(position = false, lat = false, long = false) {
+//   if (position) {
+//     x.innerHTML =
+//       "<h4 class='latitude'>Latitude: " +
+//       position.coords.latitude +
+//       "</h4><h4 class='longitude'>Longitude: " +
+//       position.coords.longitude +
+//       '</h4>';
+//   } else {
+//     x.innerHTML =
+//       "<h3 class='latitude'>Latitude: " +
+//       lat +
+//       "</h3><h3 class='longitude'>Longitude: " +
+//       long +
+//       '</h3>';
 
-  }
-  farmaciasCercanas(position.coords.latitude, position.coords.longitude);
-  fetchClima(position.coords.latitude, position.coords.longitude);
-  fetchFase(position.coords.latitude, position.coords.longitude);
-}
+//   }
+//   farmaciasCercanas(position.coords.latitude, position.coords.longitude);
+//   fetchClima(position.coords.latitude, position.coords.longitude);
+//   fetchFase(position.coords.latitude, position.coords.longitude);
+// }
 
 // hace el fetch del listado de farmacias cercanas del backend
 // si se va a usar con coordenadas usar asi farmaciasCercanas(lat, lng)
@@ -156,7 +163,7 @@ function farmaciasCercanas(latitud, longitud, direccion = false) {
 // si se va a usar con direccion usar asi fetchClima(undefined, undefined, direccion)
 function fetchClima(latitud, longitud, direccion = false) {
   var clima = document.getElementById('tiempo');
-  
+
   let url;
   if (direccion) {
     url = `../clima/${direccion}/`;
@@ -177,16 +184,17 @@ function fetchClima(latitud, longitud, direccion = false) {
       // CREE UNA CARPETA DENTRO DE STATIC CON LOS ICONOS DEL API DEL CLIMA
       // PUEDES ACCESAR A ELLOS CON LA RUTA LOCAL MAS LA VARIABLE icono QUE PUSE
       console.log(temperatura, descripcion, recomendacion, icono);
-      document.getElementById('tiempo-img').setAttribute("src", "static/core/icons/" + icono + 
-      ".png");
+      document
+        .getElementById('tiempo-img')
+        .setAttribute('src', 'static/core/icons/' + icono + '.png');
       clima.innerHTML =
-      "<h4 class='display-4 letra-caja'>" +
-      temperatura + 
-      "</h4><h4 class='display-4 letra-caja-info'>" +
-      descripcion + 
-      "</h4><h4 class='display-4 letra-caja-info'>" +
-      recomendacion +
-      '</h4>';
+        "<h4 class='display-4 letra-caja'>" +
+        temperatura +
+        "</h4><h4 class='display-4 letra-caja-info'>" +
+        descripcion +
+        "</h4><h4 class='display-4 letra-caja-info'>" +
+        recomendacion +
+        '</h4>';
     });
 }
 
@@ -213,13 +221,13 @@ function fetchFase(latitud, longitud, direccion = false) {
       // DEJE ESTE LOG PARA QUE VEAS LO QUE MUESTRA
       console.log(comuna, numero_fase, nombre_fase);
       fase.innerHTML =
-      "<h4 class='display-4 letra-caja'>" +
-      comuna + 
-      ", Se encuentra en fase " +
-      numero_fase + 
-      " (" +
-      nombre_fase +
-      ')</h4>';
+        "<h4 class='display-4 letra-caja'>" +
+        comuna +
+        ', Se encuentra en fase ' +
+        numero_fase +
+        ' (' +
+        nombre_fase +
+        ')</h4>';
     });
 }
 
@@ -237,7 +245,16 @@ function direccionUsuario(latitud, longitud, direccion = false) {
       comuna_usuario = element['comuna'];
       direccion_usuario = element['direccion'];
       numero_usuario = element['numero'];
+      if (numero_usuario === null) {
+        numero_usuario = '';
+      }
       region_usuario = element['region'];
+
+      document.querySelector('#comuna_usuario').innerHTML = comuna_usuario;
+      document.querySelector(
+        '#direccion_usuario'
+      ).innerHTML = `${direccion_usuario} ${numero_usuario}`;
+      document.querySelector('#region_usuario').innerHTML = region_usuario;
 
       console.log(
         comuna_usuario,
