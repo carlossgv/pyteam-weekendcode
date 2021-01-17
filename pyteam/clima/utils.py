@@ -28,6 +28,7 @@ from pyteam.utils import cargar_api
 
 
 WEATHER_API_KEY = os.environ.get("WEATHER_API_KEY")
+
 # funcion que da todos los datos del clima segun las coordenadas
 # adicionalmente agrega un key "recomendacion" para alertar al usuario de precauciones a tomar antes de salir
 # informacion de cada dato de la API: https://www.weatherbit.io/api/weather-current

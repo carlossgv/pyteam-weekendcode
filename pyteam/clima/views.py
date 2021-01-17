@@ -18,9 +18,9 @@ def devolver_clima(request, direccion):
         usuario_longitud = float(direccion[1])
     else:
         usuario_latitud, usuario_longitud = devuelve_latlng_usuario(direccion)
-
+    
     datos_clima = info_clima(usuario_latitud, usuario_longitud)
-
+    print ("***********", datos_clima)
     # traducir descripcion a espanol
     descripcion = datos_clima["weather"]["description"]
 

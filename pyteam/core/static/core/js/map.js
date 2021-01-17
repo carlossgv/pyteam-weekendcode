@@ -22,7 +22,7 @@ showPosition(undefined, lat, lng);
 //creacion e inicio del mapa
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
-    zoom: 15,
+    zoom: 12,
     center: new google.maps.LatLng(lat, lng),
     mapTypeId: 'roadmap',
   });
@@ -82,6 +82,7 @@ function centrarMapa() {
         console.log(
           `coordenadas a las cuales es esta corriendo ${lat}, ${lng} `
         );
+
         fetchTodo(pos.lat, pos.lng);
       },
       () => {
@@ -121,7 +122,11 @@ function showPosition(position = false, lat = false, long = false) {
       "</h3><h3 class='longitude'>Longitude: " +
       long +
       '</h3>';
+
   }
+  farmaciasCercanas(position.coords.latitude, position.coords.longitude);
+  fetchClima(position.coords.latitude, position.coords.longitude);
+  fetchFase(position.coords.latitude, position.coords.longitude);
 }
 
 // hace el fetch del listado de farmacias cercanas del backend
@@ -150,6 +155,8 @@ function farmaciasCercanas(latitud, longitud, direccion = false) {
 // si se va a usar con coordenadas usar asi fetchClima(lat, lng)
 // si se va a usar con direccion usar asi fetchClima(undefined, undefined, direccion)
 function fetchClima(latitud, longitud, direccion = false) {
+  var clima = document.getElementById('tiempo');
+  
   let url;
   if (direccion) {
     url = `../clima/${direccion}/`;
@@ -170,6 +177,16 @@ function fetchClima(latitud, longitud, direccion = false) {
       // CREE UNA CARPETA DENTRO DE STATIC CON LOS ICONOS DEL API DEL CLIMA
       // PUEDES ACCESAR A ELLOS CON LA RUTA LOCAL MAS LA VARIABLE icono QUE PUSE
       console.log(temperatura, descripcion, recomendacion, icono);
+      document.getElementById('tiempo-img').setAttribute("src", "static/core/icons/" + icono + 
+      ".png");
+      clima.innerHTML =
+      "<h4 class='display-4 letra-caja'>" +
+      temperatura + 
+      "</h4><h4 class='display-4 letra-caja-info'>" +
+      descripcion + 
+      "</h4><h4 class='display-4 letra-caja-info'>" +
+      recomendacion +
+      '</h4>';
     });
 }
 
@@ -177,6 +194,7 @@ function fetchClima(latitud, longitud, direccion = false) {
 // NOTA: SI SE DESEA CARGAR LA FUNCION CON DIRECCION SE DEBE LLAMAR DE LA SIGUIENTE MANERA:
 // fetchFase(undefined, undefined, direccion)
 function fetchFase(latitud, longitud, direccion = false) {
+  var fase = document.getElementById('fase');
   let url;
   if (direccion) {
     url = `../covid/${direccion}/`;
@@ -194,6 +212,14 @@ function fetchFase(latitud, longitud, direccion = false) {
       // CREAR AQUI LOS ELEMENTOS PARA AGREGAR A LA INFORMACION DEL CLIMA EN EL FRONT
       // DEJE ESTE LOG PARA QUE VEAS LO QUE MUESTRA
       console.log(comuna, numero_fase, nombre_fase);
+      fase.innerHTML =
+      "<h4 class='display-4 letra-caja'>" +
+      comuna + 
+      ", Se encuentra en fase " +
+      numero_fase + 
+      " (" +
+      nombre_fase +
+      ')</h4>';
     });
 }
 
