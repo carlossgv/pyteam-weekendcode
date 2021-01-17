@@ -24,15 +24,12 @@ def encuentra_datos_usuario(request, direccion):
     else:
         usuario_latitud, usuario_longitud = devuelve_latlng_usuario(direccion)
 
-    print(usuario_latitud, usuario_longitud)
-
     # if usuario_latitud == None or usuario_longitud == None:
     #     raise Http404(
     #         "Algo ha fallado con respecto a la latitud o longitud de la ubicacion del usuario"
     #     )
 
     datos_usuario = devuelve_datos_usuario(usuario_latitud, usuario_longitud)
-    print(datos_usuario)
 
     if datos_usuario:
         return JsonResponse(datos_usuario)
