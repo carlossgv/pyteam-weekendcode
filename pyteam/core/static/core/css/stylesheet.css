@@ -42,7 +42,7 @@ html, body {
   height: 150px;
 }
 .tiempo{
-  height: 100px;
+  height: 300px;
 }
 .boton{
   height: 50px;
@@ -50,4 +50,20 @@ html, body {
 
 .letra-caja{
   font-size: 30px !important;
+}
+.letra-caja-info{
+  font-size: 18px !important;
+}
+#tiempo{
+  width: 100%;
+}
+.tiempo-cabecera{
+  width: 50%;
+}
+#comisaria img{
+  width: 95%;
+  height: 100%;
+}
+#datos{
+  height: 100px;
 }

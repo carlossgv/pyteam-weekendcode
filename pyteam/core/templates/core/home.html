@@ -6,27 +6,44 @@
             <div class="col-8 mt-3 mb-3 me-2 ms-3 p-0 bg-light">
                 <div class="d-flex flex-column cuerpo m-0">
                     <div class="bd-highlight mb-3 mapa border border-primary" id="map"></div>
-                    <div class="bd-highlight p-3 bg-light mapa-info">
-                        <h4 class="display-4 letra-caja">Fase 2</h4>
+                    <div class="bd-highlight p-3 bg-light mapa-info" id="fase">
                     </div>
 
                 </div>
             </div>
             <div class="col info-lateral mt-3 p-3 pt-2 pb-2 me-3 ms-2 bg-light ">
                 <div class="d-flex flex-column bd-highlight mb-3">
-
+                    <div class="bd-highlight mb-2 border-bottom border-primary" id="datos">
+                        <form>
+                            <div class="form-group">
+                              <label for="direccion">Dirección</label>
+                              <input type="text" class="form-control" id="direccion" placeholder="Direccion [espacio] Comuna">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Enviar</button>
+                        </form>
+                    </div>
                     <div class="bd-highlight mb-2 border-bottom border-primary ubicacion" id="bloque">
                         <h4 class="display-4 letra-caja">Ubicacion</h4>
+                        <div id="ubicacion"></div>
                     </div>
                     <div class="bd-highlight mb-2 border-bottom border-primary tiempo">
-                        <h4 class="display-4 letra-caja">Tiempo</h4>
-                    </div>
+                        <div class="d-inline tiempo-cabecera">
+                            <h4 class="display-4 letra-caja">Tiempo</h4>
+                        </div>
+                        <div class="d-inline tiempo-cabecera">
+                            <img id="tiempo-img" src="" >
+                        </div>
+
+                        <div class="d-block w-100" id="tiempo"></div>
+                    </div><!--
                     <div class="bd-highlight mb-2 border-bottom border-top border-primary boton" id="farmacias">
                         <h4 class="display-4 letra-caja">Farmacias</h4>
-                    </div>
-                    <div class="bd-highlight mb-2 border-bottom border-top border-primary boton" id="comiseria">
-                        <h4 class="display-4 letra-caja">Comiseria Virtual</h4>
-                    </div>
+                    </div>-->
+                    <div class="bd-highlight mb-2 border-bottom border-top border-primary boton" id="comisaria">
+                        <a href="https://comisariavirtual.cl/" target="_blank"><img src="static/core/icons/comisaria.jpg"></a>
+                        
+                        
+                    </div>                    
                 </div>
 
             </div>
