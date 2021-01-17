@@ -89,6 +89,7 @@ function centrarMapa() {
   }
 
   farmaciasCercanas(lat, lng);
+  fetchClima(lat, lng);
 }
 
 // Manejo de error de acuerdo a la documentacion de Google
@@ -133,8 +134,15 @@ function farmaciasCercanas(latitud, longitud) {
     });
 }
 
-function fetchClima(latitud, longitud) {
-  fetch(`../clima/${latitud}/${longitud}/`)
+function fetchClima(latitud, longitud, direccion = false) {
+  let url;
+  if (direccion) {
+    url = `../clima/${direccion}/`;
+  } else {
+    url = `../clima/${latitud}/${longitud}/`;
+  }
+
+  fetch(url)
     .then((response) => response.json())
     .then((element) => {
       let temperatura = `${element['temp']}°C`;
