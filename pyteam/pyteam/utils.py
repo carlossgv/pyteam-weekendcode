@@ -4,6 +4,8 @@ from requests.exceptions import HTTPError
 from geopy import distance
 from geopy import geocoders
 
+AGENT_NOMINATIM = "Py_Team"
+
 def cargar_api(url: str, headers: dict = False) -> list:
     """
     Cargamos todo el contenido de la api de farmacias de turnos, 
@@ -45,7 +47,7 @@ def devuelve_latlng_usuario(direccion: str) -> tuple:
 
     """
 
-    geolocator = geocoders.Nominatim(user_agent="Py_Team")
+    geolocator = geocoders.Nominatim(user_agent=AGENT_NOMINATIM)
 
     location = geolocator.geocode(direccion)
 
@@ -72,7 +74,7 @@ def devuelve_comuna(latitud: float, longitud: float) -> str:
         en caso de no encontrar la direccion devuelve un string vacio
 
     """
-    geolocator = geocoders.Nominatim(user_agent="Py_Team")
+    geolocator = geocoders.Nominatim(user_agent=AGENT_NOMINATIM)
 
     location = geolocator.reverse(f"{latitud}, {longitud}")
 
@@ -82,3 +84,38 @@ def devuelve_comuna(latitud: float, longitud: float) -> str:
     comuna = location.raw['address']['city']
 
     return comuna
+
+def devuelve_datos_usuario(latitud: float, longitud: float) -> dict:
+    """
+    Devuelve los datos generales del usuario
+
+    Parameters
+    ----------
+    latitud: float
+        En principio espera un float pero puede ser un str tambien
+    longitud: float
+        En principio espera un float pero puede ser un str tambien  
+
+    Returns
+    -------
+    datos_usuario: dict
+        un diccionario con los datos del usuario 
+        en caso de no encontrar la direccion devuelve un diccionario vacio
+
+    """
+
+    geolocator = geocoders.Nominatim(user_agent=AGENT_NOMINATIM)
+
+    location = geolocator.reverse(f"{latitud}, {longitud}")
+
+    if location == None:
+        return {}
+    
+    direccion = location.raw['address']['road']
+    numero = location.raw['address'].get('house_number') # Este es con get porque si no existe devuelve None
+    comuna = location.raw['address']['city']
+    region = location.raw['address']['state']
+
+    datos_usuario = {'direccion':direccion, 'numero':numero, 'comuna':comuna, 'region':region}
+
+    return datos_usuario
