@@ -1,6 +1,7 @@
-#map {
-  width: 70%;
-  height: 70%;
+*{
+  margin: 0px;
+  padding: 0px;/*
+  border: 1px solid pink; */
 }
   
 /* Optional: Makes the sample page fill the window. */
@@ -9,11 +10,44 @@ html, body {
   margin: 0;
   padding: 0;
 }
-
-.latitude{
-  color: red;
+#nav{
+  background-color: rgb(232, 114, 12);
 }
 
-.longitude{
-  color: blue;
+.title{
+  font-size: 50px;
+  color: rgb(255, 255, 255);
+}
+.cuerpo{
+  background-color: rgb(232, 114, 12);
+}
+
+#map {
+  width: 100%;
+  height: 450px;
+}
+
+.info-lateral {
+  width: 100%;
+  height: 615px;
+}
+.mapa{
+  height: 450px;
+}
+.mapa-info{
+  height: 150px;
+}
+
+.ubicacion{
+  height: 150px;
+}
+.tiempo{
+  height: 100px;
+}
+.boton{
+  height: 50px;
+}
+
+.letra-caja{
+  font-size: 30px !important;
 }

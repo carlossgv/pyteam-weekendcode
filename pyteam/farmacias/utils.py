@@ -1,59 +1,9 @@
-import requests
 from geopy import distance
-from requests.exceptions import HTTPError
+from pyteam.utils import cargar_api
 
-# Solicita la API y devuelve el JSON
-def cargar_api(url):
-    """
-    Cargamos todo el contenido de la api de farmacias de turnos
+DISTANCIA_MINIMA = 5.0 # KM
 
-    Returns
-    -------
-    data: list
-        Una lista de diccionarios, donde cada diccionario contiene la informacion de una farmacia
-        
-    """
-    for url in [url]:
-        try:
-            response = requests.get(url)
-            response.raise_for_status()
-        except HTTPError as http_err:
-            print(f"Ocurrió un error HTTP: {http_err}")
-        except Exception as err:
-            print(f"Ocurrió otro error: {err}")
-        else:
-            print("API cargada")
-
-    data = response.json()
-
-    return data
-
-
-# Devuelve las coordenadas de todas las farmacias para comparar con ubicación y conseguir las más cercanas
-def coordenadas_totales(data):
-    coordenadas = []
-
-    for farmacia in data:
-        coordenada = {
-            "local_id": farmacia["local_id"],
-            "local_lat": farmacia["local_lat"],
-            "local_lng": farmacia["local_lng"],
-        }
-
-        coordenadas.append(coordenada)
-
-    return coordenadas
-
-
-# Devuelve todos los datos de una farmacia en especifico
-def datos_farmacia(data, id_farmacia):
-    for farmacia in data:
-        if id_farmacia == farmacia["local_id"]:
-            datos_farmacia = farmacia
-
-    return datos_farmacia
-
-def devuelve_farmacias_cercanas(usuario_latitud, usuario_longitud, url):
+def devuelve_farmacias_cercanas(usuario_latitud: float, usuario_longitud: float, url: str) -> list:
     """
     Buscamos las farmacias más cercanas al usuario, las cuales estamos considerando 
     son las que estan dentro de un rango de 5 km segun la distancia geodesica
@@ -80,10 +30,7 @@ def devuelve_farmacias_cercanas(usuario_latitud, usuario_longitud, url):
         if check_latitud.isdigit() and check_longitud.isdigit():
         
             coordenada_farmacia =  (float(farmacia["local_lat"]), float(farmacia["local_lng"]))
-            if distance.distance(coordenada_farmacia, coordenada_usuario).km <= 5.0:
+            if distance.distance(coordenada_farmacia, coordenada_usuario).km <= DISTANCIA_MINIMA:
                 farmacias_cercanas.append(farmacia)
     
     return farmacias_cercanas
-
-# data = cargar_api(url)
-# datos_farmacia(data, "245")

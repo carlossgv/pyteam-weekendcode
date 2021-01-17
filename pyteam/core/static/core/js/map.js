@@ -118,11 +118,11 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 function showPosition(position = false, lat = false, long = false) {
   if (position) {
     x.innerHTML =
-      "<h3 class='latitude'>Latitude: " +
+      "<h4 class='latitude'>Latitude: " +
       position.coords.latitude +
-      "</h3><h3 class='longitude'>Longitude: " +
+      "</h4><h4 class='longitude'>Longitude: " +
       position.coords.longitude +
-      '</h3>';
+      '</h4>';
   } else {
     x.innerHTML =
       "<h3 class='latitude'>Latitude: " +
