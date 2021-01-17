@@ -8,4 +8,5 @@ urlpatterns = [
         views.devolver_clima,
         name="devolver_clima",
     ),
+    path("clima/<direccion>/", views.clima_direccion, name="clima_direccion"),
 ]
