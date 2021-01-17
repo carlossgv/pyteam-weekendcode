@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 lat = -33.44950792242694;
 lng = -70.66775128317754;
 showPosition(undefined, lat, lng);
-farmaciasCercanas(lat, lng);
+// farmaciasCercanas(lat, lng);
 
 //creacion e inicio del mapa
 function initMap() {
@@ -43,6 +43,9 @@ function farmaciasCercanas(latitud, longitud) {
   fetch(`../farmacias/${latitud}/${longitud}`)
     .then((response) => response.json())
     .then((farmacias) => {
+      console.log(
+        `se esta corriendo farmaciascercanas con ${latitud},${longitud}`
+      );
       farmacias.forEach((farmacia) => agregarMarker(farmacia));
     });
 }
@@ -96,6 +99,8 @@ function centrarMapa() {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
   }
+
+  farmaciasCercanas(lat, lng);
 }
 
 // Manejo de error de acuerdo a la documentacion de Google
