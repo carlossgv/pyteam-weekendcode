@@ -67,3 +67,38 @@ html, body {
 #datos{
   height: 100px;
 }
+
+/*Altura 100 VH*/
+@media (min-width: 768px){
+  .alto-100{
+    height: 100vh;
+  }
+}
+
+/*Estilos boton*/
+a.btn{
+  background-color: #f54954;
+  border: none;
+}
+a.btn:hover, a.btn:active, a.btn:focus{
+  background-color: #AC0914;
+  border: none;
+}
+button.btn{
+  background-color: #f54954;
+  border: none;
+}
+button.btn:hover, button.btn:active, button.btn:focus{
+  background-color: #AC0914;
+  border: none;
+} 
+
+/* Typografia */
+body,h1,h2,h3,h4,h5,a,button.btn {
+  font-family: 'Anton', sans-serif;
+}
+
+/* No muestres las labels*/
+div label {
+  display: none;
+}
