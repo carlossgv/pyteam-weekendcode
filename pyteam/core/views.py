@@ -6,7 +6,7 @@ import os
 
 # Create your views here.
 class HomeView(TemplateView):
-    template_name = "core/home2.html"
+    template_name = "core/home.html"
 
     def get(self, request, *args, **kwargs):
         return render(

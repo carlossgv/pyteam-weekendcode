@@ -1,71 +1,130 @@
 {% extends "core/base.html" %}
 
-{% block content %}
-    <div class="container">
-        <div class="row cuerpo mt-2">
-            <div class="col-8 mt-3 mb-3 me-2 ms-3 p-0 bg-light">
-                <div class="d-flex flex-column cuerpo m-0">
-                    <div class="bd-highlight mb-3 mapa border border-primary" id="map"></div>
-                    <div class="bd-highlight p-3 bg-light mapa-info" id="fase">
-                    </div>
-
-                </div>
-            </div>
-            <div class="col info-lateral mt-3 p-3 pt-2 pb-2 me-3 ms-2 bg-light ">
-                <div class="d-flex flex-column bd-highlight mb-3">
-                    <div class="bd-highlight mb-2 border-bottom border-primary" id="datos">
-                        <form id="formulario">
-                            <div class="form-group">
-                              <label for="direccion">Dirección</label>
-                              <input type="text" class="form-control" id="direccion" placeholder="Ingresar dirección con Comuna">
-                            </div>
-                            <button id="boton-submit" type="submit" class="btn btn-primary">Enviar</button>
-                        </form>
-                    </div>
-                    <div class="bd-highlight mb-2 border-bottom border-primary ubicacion" id="bloque">
-                        <h4 class="display-4 letra-caja">Ubicación</h4>
-                        <div id="ubicacion_div">
-                            <h3 id="comuna_usuario"></h3>
-                            <p id="direccion_usuario"></p>
-                            <p id="region_usuario"></p>
-                        </div>
-                    </div>
-                    <div class="bd-highlight mb-2 border-bottom border-primary tiempo">
-                        <div class="d-inline tiempo-cabecera">
-                            <h4 class="display-4 letra-caja">Tiempo</h4>
-                        </div>
-                        <div class="d-inline tiempo-cabecera">
-                            <img id="tiempo-img" src="" >
-                        </div>
-
-                        <div class="d-block w-100" id="tiempo"></div>
-                    </div><!--
-                    <div class="bd-highlight mb-2 border-bottom border-top border-primary boton" id="farmacias">
-                        <h4 class="display-4 letra-caja">Farmacias</h4>
-                    </div>-->
-                    <div class="bd-highlight mb-2 border-bottom border-top border-primary boton" id="comisaria">
-                        <a href="https://comisariavirtual.cl/" target="_blank"><img src="static/core/icons/comisaria.jpg"></a>
-                        
-                        
-                    </div>                    
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <!-- <div id="map"></div> -->
-
-{% endblock %}
-
-{% block script %}
 {% load static %}
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
-    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
-    crossorigin="anonymous">
-</script>
-<script async defer src="https://maps.googleapis.com/maps/api/js?key={{ key_google }}&callback=initMap"
-        type="text/javascript">
-</script>
-<script src="{% static 'core/js/map.js' %}"></script>
+
+{% block content %}
+    
+
+        <main class="container-fluid d-flex flex-wrap justify-content-center"> <!--align-items-center   alto-100-->
+            
+            <div class="row w-100">
+
+                <!-- Columna izquierda -->
+                <div class="col-12 col-md-8 d-flex flex-column">
+
+                    <!-- Mapa -->
+
+                    <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-map-marker fa-fw"></i>Mapa</h5>
+                            <div id="map"></div>                                
+                        </div>
+                    </div>
+
+                    <!-- Fase -->
+                    
+                    <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-info-circle fa-fw"></i>Fases</h5>
+                            <div class="ms-2 p-2" id="fase"></div>                                
+                        </div>
+                    </div>
+
+                   
+                </div>
+
+                <!-- Columna derecha -->
+                <div class="col-12 col-md-4 d-flex flex-column">
+
+                    <!-- Ingresar direccion-->
+                                        
+                    <div class="card m-2 p-2 rounded flex-fill " style="background-color: #efeff0">
+                        <div class="card-body">
+                            <h5 class="card-title">Ingresa tu dirección y comuna</h5>
+                            <form id="formulario">
+                                <div class="form-group">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" class="form-control mb-2" id="direccion" placeholder="Ej: Los Pescadores 2230 Ñuñoa">
+                                </div>
+                            <button id="boton-submit" type="submit" class="btn btn-primary p-3 fs-4 w-100">Enviar</button>
+                        </form>                                
+                        </div>
+                    </div>
+
+                    <!-- Ubicacion -->
+                    
+                    <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
+                        <div class="card-body" id="bloque">
+                            <h5 class="card-title"><i class="fa fa-map-pin fa-fw"></i>Ubicacion</h5>
+                            <div class="ms-2 p-2" id="ubicacion_div">
+                                <h3 id="comuna_usuario"></h3>
+                                <p id="direccion_usuario"></p>
+                                <p id="region_usuario"></p>
+                            </div>                                
+                        </div>
+                    </div>
+
+                    <!-- Clima -->
+                    
+                    <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fa fa-umbrella fa-fw"></i>Clima</h5>
+                            
+                            <div class="d-inline tiempo-cabecera">
+                                <img id="tiempo-img" src="" >
+                            </div>
+                            <div class="ms-2 p-2" id="tiempo"></div>
+                                                        
+                        </div>
+                    </div>
+
+                    <!-- Comisaria -->
+
+                    <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h5 class="card-title"><i class="fa fa-address-card-o fa-fw me-1"></i>Comisaria virtual</h5>
+                            <div>
+                                <!--<img class="w-100 p-3" src="{% static 'core/icons/c_chile.png' %}" alt="">-->
+                            </div>
+                            <a href="https://comisariavirtual.cl/" target="_blank" class="btn btn-primary m-2 p-3 fs-4" style=""> Obtener Permiso</a>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Fila extra -->
+                <div class="col-12">
+
+                    <!-- Informacion general -->
+                    <div class="card m-2 p-2 rounded" style="background-color: #f2c15f">
+                        <div class="card-body d-flex flex-column justify-content-center">
+                            <h3 style="text-align: justify; color: #262626;"> Con HELP-COVID podrás enterarte de las farmacias más cercanas a tu ubicación, del clima actual, en qué fase se encuentra tu lugar de residencia y además podrás emitir el permiso necesario para transitar en tu comuna a través de la comisaria virtual.</h3>
+                            <h5 class="text-center pt-4" style="color: #E4660C;">Aplicación web creada por PyTeam<i class="fa fa-heart fa-fw ms-1"></i></h5>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            
+
+        </main>
+        
+    
+{% endblock %}
+{% block script %}
+
+    <!-- Bootstrap -->    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" 
+        crossorigin="anonymous">
+    </script>
+
+    <!-- Mapa Google -->
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ key_google }}&callback=initMap"
+            type="text/javascript">
+    </script>
+    
+    <!-- JavaScript -->
+    <script src="{% static 'core/js/map.js' %}"></script>
 {% endblock %}
