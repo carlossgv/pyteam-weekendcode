@@ -16,7 +16,8 @@
 
                     <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-map-marker fa-fw"></i>Mapa</h5>                                
+                            <h5 class="card-title"><i class="fa fa-map-marker fa-fw"></i>Mapa</h5>
+                            <div id="map"></div>                                
                         </div>
                     </div>
 
@@ -24,7 +25,8 @@
                     
                     <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-info-circle fa-fw"></i>Fases</h5>                                
+                            <h5 class="card-title"><i class="fa fa-info-circle fa-fw"></i>Fases</h5>
+                            <div class="ms-2 p-2" id="fase"></div>                                
                         </div>
                     </div>
 
@@ -35,18 +37,30 @@
                 <div class="col-12 col-md-4 d-flex flex-column">
 
                     <!-- Ingresar direccion-->
-                    
+                                        
                     <div class="card m-2 p-2 rounded flex-fill " style="background-color: #efeff0">
                         <div class="card-body">
-                            <h5 class="card-title">Ingresa direccion</h5>                                
+                            <h5 class="card-title">Ingresa tu dirección y comuna</h5>
+                            <form id="formulario">
+                                <div class="form-group">
+                                    <label for="direccion">Dirección</label>
+                                    <input type="text" class="form-control mb-2" id="direccion" placeholder="Ej: Los Pescadores 2230 Ñuñoa">
+                                </div>
+                            <button id="boton-submit" type="submit" class="btn btn-primary p-3 fs-4 w-100">Enviar</button>
+                        </form>                                
                         </div>
                     </div>
 
                     <!-- Ubicacion -->
                     
                     <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
-                        <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-map-pin fa-fw"></i>Ubicacion</h5>                                
+                        <div class="card-body" id="bloque">
+                            <h5 class="card-title"><i class="fa fa-map-pin fa-fw"></i>Ubicacion</h5>
+                            <div class="ms-2 p-2" id="ubicacion_div">
+                                <h3 id="comuna_usuario"></h3>
+                                <p id="direccion_usuario"></p>
+                                <p id="region_usuario"></p>
+                            </div>                                
                         </div>
                     </div>
 
@@ -54,7 +68,13 @@
                     
                     <div class="card m-2 p-2 rounded flex-fill" style="background-color: #efeff0">
                         <div class="card-body">
-                            <h5 class="card-title"><i class="fa fa-umbrella fa-fw"></i>Clima</h5>                                
+                            <h5 class="card-title"><i class="fa fa-umbrella fa-fw"></i>Clima</h5>
+                            
+                            <div class="d-inline tiempo-cabecera">
+                                <img id="tiempo-img" src="" >
+                            </div>
+                            <div class="ms-2 p-2" id="tiempo"></div>
+                                                        
                         </div>
                     </div>
 
@@ -66,7 +86,7 @@
                             <div>
                                 <!--<img class="w-100 p-3" src="{% static 'core/icons/c_chile.png' %}" alt="">-->
                             </div>
-                            <a href="https://comisariavirtual.cl/" class="btn btn-primary m-2 p-3 fs-4" style=""> Obtener Permiso</a>
+                            <a href="https://comisariavirtual.cl/" target="_blank" class="btn btn-primary m-2 p-3 fs-4" style=""> Obtener Permiso</a>
                         </div>
                     </div>
                     
