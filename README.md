@@ -63,6 +63,6 @@ python manage.py runserver
 
 ## Autores✒️
 
-* **Carlos Gonzales** - *Colaborador* - [carlossgv](https://github.com/carlossgv)
+* **Carlos González** - *Colaborador* - [carlossgv](https://github.com/carlossgv)
 * **Eduardo A. Barrios** - *Colaborador* - [GTXs4](https://github.com/gtxs4)
 * **Erick Henriquez R.** - *Colaborador* - [ErickHenriquez](https://github.com/ErickHenriquez)
